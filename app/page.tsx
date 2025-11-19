@@ -4,7 +4,6 @@
 
 import { useChat } from "@ai-sdk/react";
 import type { UIMessage } from "ai";
-import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 
@@ -81,37 +80,39 @@ const ArrowUpRightIcon = ({ className }: { className?: string }) => (
 );
 
 const markdownComponents: Components = {
-  p: ({ children }: { children: ReactNode }) => (
-    <p className="mb-3 text-sm leading-relaxed text-slate-200">{children}</p>
+  p: (props) => (
+    <p className="mb-3 text-sm leading-relaxed text-slate-200">
+      {props.children}
+    </p>
   ),
-  ul: ({ children }: { children: ReactNode }) => (
+  ul: (props) => (
     <ul className="mb-3 list-disc space-y-2 pl-5 text-sm text-slate-200">
-      {children}
+      {props.children}
     </ul>
   ),
-  ol: ({ children }: { children: ReactNode }) => (
+  ol: (props) => (
     <ol className="mb-3 list-decimal space-y-2 pl-5 text-sm text-slate-200">
-      {children}
+      {props.children}
     </ol>
   ),
-  code: ({ children }: { children: ReactNode }) => (
+  code: (props) => (
     <code className="rounded-md bg-slate-900/70 px-1.5 py-0.5 font-mono text-xs text-emerald-200">
-      {children}
+      {props.children}
     </code>
   ),
-  pre: ({ children }: { children: ReactNode }) => (
+  pre: (props) => (
     <pre className="mb-3 overflow-x-auto rounded-xl bg-slate-900/80 p-4 text-xs text-emerald-100">
-      {children}
+      {props.children}
     </pre>
   ),
-  a: ({ children, href }: { children: ReactNode; href?: string }) => (
+  a: (props) => (
     <a
       className="text-sky-300 underline underline-offset-2"
-      href={href}
+      href={props.href}
       target="_blank"
       rel="noreferrer"
     >
-      {children}
+      {props.children}
     </a>
   ),
 };
@@ -149,7 +150,7 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),transparent_35%),radial-gradient(circle_at_bottom,_rgba(99,102,241,0.12),transparent_40%)] text-slate-50">
+    <div className="min-h-screen bg-slate-950 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.12),transparent_35%),radial-gradient(circle_at_bottom,rgba(99,102,241,0.12),transparent_40%)] text-slate-50">
       <main className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-16 pt-10 lg:flex-row">
         <section className="flex w-full flex-col gap-8">
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-indigo-500/10 backdrop-blur-md">
@@ -163,9 +164,9 @@ export default function Home() {
               Dán hợp đồng Solidity và hỏi Contract Inspector về rủi ro bảo mật
             </h1>
             <p className="mt-4 text-base leading-relaxed text-slate-300">
-              Công cụ dùng OpenAI GPT-4o mini để rà soát lỗ hổng, điểm yếu thiết
-              kế và khuyến nghị cải thiện. Bạn có thể vừa gửi hợp đồng vừa đặt
-              câu hỏi để truy vết từng thành phần.
+              Công cụ dùng LLMs để rà soát lỗ hổng, điểm yếu thiết kế và khuyến
+              nghị cải thiện. Bạn có thể vừa gửi hợp đồng vừa đặt câu hỏi để
+              truy vết từng thành phần.
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-slate-300">
               <span className="rounded-full border border-white/10 px-3 py-1">
@@ -186,7 +187,7 @@ export default function Home() {
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-slate-900/40 p-1 shadow-2xl shadow-emerald-500/5">
-            <div className="rounded-[26px] border border-white/5 bg-gradient-to-br from-slate-900 to-slate-950 p-6">
+            <div className="rounded-[26px] border border-white/5 bg-linear-to-br from-slate-900 to-slate-950 p-6">
               <div className="flex items-center justify-between text-sm text-slate-400">
                 <div className="font-medium text-slate-200">
                   Solidity Contract
@@ -258,7 +259,7 @@ export default function Home() {
                     >
                       <div
                         className={cn(
-                          "h-10 w-10 flex-shrink-0 rounded-full border border-white/10 bg-gradient-to-br from-slate-900 to-slate-800 text-xs font-semibold uppercase tracking-wide text-white",
+                          "h-10 w-10 shrink-0 rounded-full border border-white/10 bg-gradient-to-br from-slate-900 to-slate-800 text-xs font-semibold uppercase tracking-wide text-white",
                           isUser && "from-indigo-600 to-indigo-500",
                         )}
                       >
