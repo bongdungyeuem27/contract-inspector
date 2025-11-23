@@ -1,6 +1,7 @@
 // app/api/chat/route.ts
 import { openai } from "@ai-sdk/openai";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
+import z from "zod";
 // (tuỳ chọn) nếu bạn muốn dùng system prompt từ file:
 // import fs from 'fs/promises'; import path from 'path';
 
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
 
   const result = streamText({
     // Bạn có thể dùng openai('gpt-4o-mini') hoặc openai.responses('gpt-4o-mini')
-    model: openai("gpt-4o-mini"),
+    model: openai("gpt-oss"),
 
     // Nếu có system prompt: dùng modelMessages; còn không, giữ như hiện tại:
     messages: convertToModelMessages(messages),
@@ -39,19 +40,16 @@ export async function POST(req: Request) {
       //   // filters: { type: 'and', filters: [{ key: 'category', type: 'eq', value: 'tailor' }] },
       //   // ranking: { ranker: 'auto' },
       // }),
-      // tool_assets: {
-      //   description: "Get assets information",
-      //   inputSchema: z.object({}),
-      //   execute: async () => {
-      //     console.log("tool_assets chain", chain);
-      //     const data = await toolAssetsMemoryCache
-      //       .getCacheWithHook(`tool_assets:${chain}`, `tool_assets:${chain}`)
-      //       .then((assets) => {
-      //         return assets;
-      //       });
-      //     return { data };
-      //   },
-      // },
+      get_vulnerabilities: {
+        description: "Get vulnerabilities",
+        inputSchema: z.object({}),
+        execute: async () => {
+          const data = await fetch("/api/mcp/http/get-vulnerabilities").then(
+            (res) => res.json()
+          );
+          return { data: data.content };
+        },
+      },
     },
 
     // (tuỳ chọn) ép model dùng tool file_search ở bước đầu:
